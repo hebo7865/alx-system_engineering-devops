@@ -1,11 +1,9 @@
-frontend lb-01
+frontend haproxy-config
     bind *:80
-    bind *:443 ssl crt /home/ubuntu/haproxy.pem
-    mode http
-    default_backend webservers
-
-backend webservers
-    mode http
+    bind *:443 ssl crt /etc/haproxy/certs/www.magedsaif.tech.pem
+    redirect scheme https code 301 if !{ ssl_fc }
+    default_backend backend-config
+backend backend-config
     balance roundrobin
-    server 377545-web-01 35.153.79.242:80
-    server 377545-web-02 52.201.164.137:80
+    server 388481-web-01 100.26.174.108:80 check
+    server 388481-web-02 100.26.241.106:80 check
